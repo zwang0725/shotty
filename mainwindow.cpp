@@ -10,8 +10,13 @@ MainWindow::MainWindow(QWidget *parent) :
 {
     ui->setupUi(this);
     Qt::WindowFlags flags = 0;
-    setWindowFlags(flags); // 设置禁止最大化
-    setFixedSize(779,540); // 禁止改变窗口大小。
+
+    setMaximumHeight(525);
+    setMaximumWidth(779);
+    setFixedSize(779,525);
+    //setMinimumSize(779,551); // 禁止改变窗口大小。
+    this->adjustSize();
+    //setWindowFlags(flags); // 设置禁止最大化
     ui->Main_Label->setBackgroundRole(QPalette::Base);
     ui->Main_Label->setAlignment(Qt::AlignTop);
     ui->small_label->setBackgroundRole(QPalette::Base);
