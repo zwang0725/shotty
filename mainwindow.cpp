@@ -24,7 +24,7 @@ MainWindow::MainWindow(QWidget *parent) :
 //    V = ui->scrollArea_big->verticalScrollBar();
 //    H = ui->scrollArea_big->horizontalScrollBar();
 //    V= ui->scrollArea_big->horizontalScrollBar();
-//    V->setSliderDown(true);  //如需scrollbar发射signal必须set
+//    V->setSliderDown(true);  //set In order that scrollbar emits signal,you need to set here true
     ui->pushButton_write_yml->setEnabled(false);
     ui->pushButton_save_image->setEnabled(false);
     ui->scrollArea_big->setWidget(ui->Main_Label);
@@ -54,6 +54,8 @@ void MainWindow::on_pushButton_clicked()
         ImgName = QFileDialog::getOpenFileName(this,
      tr("Open Image"), ".", tr("Image Files (*.png *.jpg *.bmp)"));
     if (!ImgName.isEmpty()) {
+        vector<QRect>().swap(Rects);  //Clear the rect info from last opening image
+        std::vector<Crop_Info>().swap(writing_info);//Clear the writing info from last opening image
         ui->Main_Label->setPicture(ImgName);
         width = ui->Main_Label->pic_width();
         height = ui->Main_Label->pic_height();
@@ -66,6 +68,8 @@ void MainWindow::on_pushButton_write_yml_clicked()
 
 
     int point_index = ImgName.lastIndexOf(".");
+    int slash_index = ImgName.length() - ImgName.lastIndexOf("/")-1;
+    qDebug()<<slash_index;
     QFile file(ImgName.left(point_index + 1)+ "xml");
     if (!file.open(QIODevice::WriteOnly | QIODevice::Text))
     {
@@ -79,7 +83,8 @@ void MainWindow::on_pushButton_write_yml_clicked()
         stream.setAutoFormatting(true);
         stream.writeStartDocument();
         stream.writeStartElement("Annotation");
-
+        stream.writeTextElement("folder","VOC2007");
+        stream.writeTextElement("filename",ImgName.right(slash_index));
         stream.writeStartElement("size");
         stream.writeTextElement("width", QString::number(width));
         stream.writeTextElement("height",QString::number(height));
@@ -99,7 +104,7 @@ void MainWindow::on_pushButton_write_yml_clicked()
 
             QRect test;
             test.topLeft().x();
-            stream.writeStartElement("bngbox");
+            stream.writeStartElement("bndbox");
             stream.writeTextElement("xmin", QString::number(writing_info[i].Rectangle.topLeft().x()));
             stream.writeTextElement("ymin", QString::number(writing_info[i].Rectangle.topLeft().y()));
             stream.writeTextElement("xmax", QString::number(writing_info[i].Rectangle.bottomRight().x()));
@@ -125,7 +130,7 @@ void MainWindow::on_pushButton_write_yml_clicked()
     msgBoxCloseTimer->start();
 
     msgBox->exec();
-    writing_info.clear();
+    vector<Crop_Info>().swap(writing_info);
 }
 void MainWindow::on_pushButton_confirm_clicked()
 {

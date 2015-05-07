@@ -66,22 +66,22 @@
     </property>
     <item>
      <property name="text">
-      <string>front</string>
+      <string>Frontal</string>
      </property>
     </item>
     <item>
      <property name="text">
-      <string>rear</string>
+      <string>Rear</string>
      </property>
     </item>
     <item>
      <property name="text">
-      <string>left</string>
+      <string>Left</string>
      </property>
     </item>
     <item>
      <property name="text">
-      <string>right</string>
+      <string>Right</string>
      </property>
     </item>
    </widget>
@@ -101,12 +101,17 @@
     </property>
     <item>
      <property name="text">
-      <string>Airplane</string>
+      <string>aeroplane</string>
      </property>
     </item>
     <item>
      <property name="text">
-      <string>Car</string>
+      <string>car</string>
+     </property>
+    </item>
+    <item>
+     <property name="text">
+      <string>people</string>
      </property>
     </item>
     <item>
@@ -236,7 +241,7 @@
      <x>0</x>
      <y>0</y>
      <width>779</width>
-     <height>26</height>
+     <height>23</height>
     </rect>
    </property>
   </widget>
